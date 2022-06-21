@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.*;
@@ -57,7 +58,7 @@ public class UserController {
         }
 
 
-        return "user_list";
+        return "user/user_list";
     }
 
     @GetMapping("/{userId}")
@@ -96,6 +97,13 @@ public class UserController {
             throw new RuntimeException(e);
         }
         model.addAttribute("user", userDTO);
-        return "user_detail";
+        return "user/saveOrEdit";
     }
+
+    @GetMapping("/create")
+    public String createPage(Model model) {
+        model.addAttribute("userDto", new UserDTO());
+        return "user/saveOrEdit";
+    }
+
 }
