@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("backend/user")
 public class UserController {
 
     private static String url = "jdbc:mysql://localhost:3306/t3htutorial";
@@ -58,7 +58,7 @@ public class UserController {
         }
 
 
-        return "user/user_list";
+        return "backend/user/user_list";
     }
 
     @GetMapping("/{userId}")
@@ -97,13 +97,13 @@ public class UserController {
             throw new RuntimeException(e);
         }
         model.addAttribute("user", userDTO);
-        return "user/saveOrEdit";
+        return "backend/user/saveOrEdit";
     }
 
     @GetMapping("/create")
     public String createPage(Model model) {
         model.addAttribute("userDto", new UserDTO());
-        return "user/saveOrEdit";
+        return "backend/user/saveOrEdit";
     }
 
 }

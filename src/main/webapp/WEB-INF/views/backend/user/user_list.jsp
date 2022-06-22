@@ -1,16 +1,16 @@
 <%@ page pageEncoding="UTF-8" %>
-<%@ include file="../../common/taglib.jsp" %>
+<%@ include file="../../../common/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách tài khoản</title>
-    <jsp:include page="../../common/web/head.jsp"></jsp:include>
+    <jsp:include page="../common/head.jsp"></jsp:include>
 </head>
 
 <body>
-<jsp:include page="../../common/nav.jsp"></jsp:include>
+<jsp:include page="../common/nav.jsp"></jsp:include>
 <div class="container min-vh-100">
     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Danh sách tài khoản</p>
     <table class="table">
@@ -44,11 +44,9 @@
         </tbody>
     </table>
 </div>
+<jsp:include page="../common/foot.jsp"></jsp:include>
+<jsp:include page="../common/js.jsp"></jsp:include>
 
-<!-- MDB -->
-<jsp:include page="../../common/footer.jsp"></jsp:include>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
 </body>
 
 </html>

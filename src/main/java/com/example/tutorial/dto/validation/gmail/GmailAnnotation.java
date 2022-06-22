@@ -1,7 +1,5 @@
 package com.example.tutorial.dto.validation.gmail;
 
-import com.example.tutorial.dto.validation.password.RepassValidation;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
