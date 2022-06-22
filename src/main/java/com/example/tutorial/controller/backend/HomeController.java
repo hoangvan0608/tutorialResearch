@@ -1,4 +1,4 @@
-package com.example.tutorial.controller;
+package com.example.tutorial.controller.backend;
 
 import com.example.tutorial.dto.UserDTO;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.example.tutorial.controller;
+package com.example.tutorial.controller.backend;
 
 import com.example.tutorial.dto.CategoryDTO;
 import com.example.tutorial.utils.MessageResponse;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("backend/category")
+@RequestMapping("/backend/category")
 public class CategoryController {
     String url = "jdbc:mysql://localhost:3306/t3htutorial";
     String user = "root";

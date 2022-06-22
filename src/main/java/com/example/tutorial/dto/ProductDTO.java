@@ -1,0 +1,12 @@
+package com.example.tutorial.dto;
+
+import lombok.Data;
+
+@Data
+public class ProductDTO {
+    private Long id;
+    private Long price;
+    private String name;
+    private String description;
+    private String image;
+}
