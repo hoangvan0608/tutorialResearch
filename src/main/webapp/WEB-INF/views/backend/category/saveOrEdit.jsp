@@ -21,26 +21,24 @@
         <h2 class="text-center">Thêm thể loại</h2>
     </c:if>
     <jsp:include page="../common/message.jsp"></jsp:include>
-    <form
-            <c:if test="${empty category}">action="/backend/category/save" method="post" </c:if>
-            <c:if test="${not empty category}"> action="/backend/category/update/${category.id}" method="post" </c:if>>
+    <form action="/backend/category/save" method="post">
         <input type="hidden" name="id" value="${category.id}">
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Tên thể loại</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" name="name"
-               <c:if test="${not empty category}">value="${category.name}" </c:if> >
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Mô tả</label>
-        <input type="text" class="form-control" id="exampleInputPassword1" name="description" required
-               <c:if test="${not empty category}">value="${category.description}" </c:if> >
-    </div>
-    <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-outline-primary">
-            <c:if test="${not empty category}">Cập nhật</c:if>
-            <c:if test="${empty category}">Thêm mới</c:if>
-        </button>
-    </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Tên thể loại</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" name="name"
+                   <c:if test="${not empty category}">value="${category.name}" </c:if> >
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name="description" required
+                   <c:if test="${not empty category}">value="${category.description}" </c:if> >
+        </div>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-outline-primary">
+                <c:if test="${not empty category}">Cập nhật</c:if>
+                <c:if test="${empty category}">Thêm mới</c:if>
+            </button>
+        </div>
     </form>
 </div>
 
