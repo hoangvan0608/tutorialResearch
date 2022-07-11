@@ -21,8 +21,7 @@
         <h2 class="text-center">Thêm sản phẩm</h2>
     </c:if>
     <jsp:include page="../common/message.jsp"></jsp:include>
-    <form
-            <c:if test="${empty product}">action="/backend/product/save" method="post" </c:if> >
+    <form action="/backend/product/save" method="post" >
         <input type="hidden" name="id" value="${product.id}">
         <div class="row mb-3">
             <div class="col-md-8">
@@ -33,7 +32,7 @@
             <div class="col-md-4">
                 <label for="price" class="form-label">Giá</label>
                 <input type="number" min="0" class="form-control" id="price" name="price"
-                       <c:if test="${not empty product}">value="${product.name}" </c:if> >
+                       <c:if test="${not empty product}">value="${product.price}" </c:if> >
             </div>
 
         </div>
@@ -72,16 +71,16 @@
             <input type="text" class="form-control" id="exampleInputPassword1" name="description" required
                    <c:if test="${not empty product}">value="${product.description}" </c:if> >
         </div>
-        <div class="row mb-6">
+        <div class="row mb-3">
             <div class="col-md-6">
                 <label for="fileUploadId" class="form-label">Image</label>
-                <input type="text" class="form-control" id="fileUploadName" name="image" hidden/>
+                <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}"> value="${product.image}" </c:if> name="image" hidden/>
                 <input type="file" id="fileUploadId" class="form-control"/><%-- thẻ input chon ảnh--%>
                 <div></div>
             </div>
             <div class="col-md-6">
                 <div>
-                    <img id="outputImage" width="100px"/>
+                    <img id="outputImage" width="100px" <c:if test="${not empty product}"> src="${product.image}" </c:if>/>
                 </div>
             </div>
 
@@ -99,7 +98,7 @@
                     $.ajax({
                         type: "POST",
                         enctype: 'multipart/form-data',
-                        url: "/upload",
+                        url: "/upload/storage",
                         data: data,
                         // prevent jQuery from automatically transforming the data into a query string
                         processData: false,
@@ -118,7 +117,7 @@
                 })
             </script>
         </div>
-        <div class="d-grid gap-2">
+        <div class="d-grid gap-2 mb-3">
             <button type="submit" class="btn btn-outline-primary">
                 <c:if test="${not empty product}">Cập nhật</c:if>
                 <c:if test="${empty product}">Thêm mới</c:if>

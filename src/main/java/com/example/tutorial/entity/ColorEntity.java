@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Entity(name = "color")
 @Data
-public class ColorEntity {
+public class ColorEntity extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

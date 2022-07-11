@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity(name = "category")
 @Data
 @NoArgsConstructor
-public class CategoryEntity {
+public class CategoryEntity extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

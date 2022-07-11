@@ -25,13 +25,14 @@
     <c:if test="${empty user}">
         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Tạo tài khoản</p>
     </c:if>
-    <form id="myForm" method="post" action="/user/save">
+    <form id="myForm" method="post" action="/backend/user/save">
         <jsp:include page="../common/message.jsp"></jsp:include>
         <div class="row mb-4">
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="form3Example1">Họ và tên</label>
                     <input type="text" id="form3Example1" name="fullName" class="form-control" value="${user.fullName}"/>
+                    <input name="id" value="${user.id}" hidden>
                 </div>
             </div>
         </div>
@@ -43,7 +44,7 @@
             <label class="form-label" for="form3Example4">Password</label>
             <input type="password" id="form3Example4" name="password" class="form-control" value="${user.password}"/>
         </div>
-        <select class="form-select mb-4">
+        <select name="role" class="form-select mb-4">
             <option selected>Loại tài khoản</option>
             <option <c:if test="${user.role == 'USER'}"> SELECTED</c:if> value="USER">USER</option>
             <option <c:if test="${user.role == 'ADMIN'}"> SELECTED</c:if> value="ADMIN">ADMIN</option>

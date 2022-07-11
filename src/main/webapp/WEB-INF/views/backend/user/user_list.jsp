@@ -13,6 +13,7 @@
 <jsp:include page="../common/nav.jsp"></jsp:include>
 <div class="container min-vh-100">
     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Danh sách tài khoản</p>
+    <jsp:include page="../common/message.jsp"></jsp:include>
     <table class="table">
         <thead>
         <tr>

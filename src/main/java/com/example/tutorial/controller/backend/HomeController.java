@@ -1,6 +1,8 @@
 package com.example.tutorial.controller.backend;
 
 import com.example.tutorial.dto.UserDTO;
+import com.example.tutorial.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,8 @@ import java.sql.SQLException;
 
 @Controller
 public class HomeController {
+    @Autowired
+    private UserService userService;
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -34,6 +38,7 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "signup";
         }
+        userService.save(dto);
         Connection con = null;
         try {
             String url = "jdbc:mysql://localhost:3306/t3htutorial";

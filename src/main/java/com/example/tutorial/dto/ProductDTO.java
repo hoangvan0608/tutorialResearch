@@ -9,4 +9,7 @@ public class ProductDTO {
     private String description;
     private String image;
     private Long price;
+    private Long categoryId;
+    private Long memoryId;
+    private Long colorId;
 }

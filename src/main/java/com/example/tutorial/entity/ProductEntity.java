@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity(name = "product")
 @Builder
-public class ProductEntity {
+public class ProductEntity extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

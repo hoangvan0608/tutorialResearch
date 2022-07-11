@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class FileUtils {
-    public static String FOLDER_IMAGE = "C:\\Users\\GDCV_User\\Desktop\\relearnT3h\\LOCAL_IMAGE\\";
+//    public static String FOLDER_IMAGE = "C:\\Users\\GDCV_User\\Desktop\\relearnT3h\\LOCAL_IMAGE\\";
+    public static String FOLDER_IMAGE = "C:\\Users\\TAV\\OneDrive\\Desktop\\LOCAL_PHOTO\\";
+
     public static String saveFile(MultipartFile file) {
         File folder = new File(FOLDER_IMAGE);
         if (!folder.exists()) folder.mkdirs();
