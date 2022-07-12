@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,5 +30,15 @@ public class UserEntity extends BaseModel{
     @Basic
     @Column(name = "role")
     private String role;
+
+    @Column
+    private String code;
+
+    @Column
+    private Boolean ACTIVE;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false, insertable = false)
+    List<UserDetailEntity> contacts;
 
 }

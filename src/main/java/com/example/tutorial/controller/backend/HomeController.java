@@ -2,12 +2,14 @@ package com.example.tutorial.controller.backend;
 
 import com.example.tutorial.dto.UserDTO;
 import com.example.tutorial.service.UserService;
+import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 public class HomeController {
     @Autowired
     private UserService userService;
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -38,34 +41,13 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "signup";
         }
-        userService.save(dto);
-        Connection con = null;
-        try {
-            String url = "jdbc:mysql://localhost:3306/t3htutorial";
-            String user = "root";
-            String password = "2306";
-            con = DriverManager.getConnection(url, user, password);
-            if(con != null) {
-                String sql = "INSERT INTO `user` (`fullname`, `email`, `password`, `role`) VALUES (?, ?, ?, ?)";
-                PreparedStatement statement = con.prepareStatement(sql);
-                statement.setString(1,dto.getFullName());
-                statement.setString(2, dto.getEmail());
-                statement.setString(3, dto.getPassword());
-                statement.setString(4,"USER");
-                int result = statement.executeUpdate();
-                if(result > 0) {
-                    model.addFlashAttribute("message", "Đăng ký thành công");
-                    model.addFlashAttribute("alert", "success");
-                } else {
-                    model.addFlashAttribute("message", "Đăng ký thất bại");
-                    model.addFlashAttribute("alert", "warning");
-                }
-            }
-        } catch (SQLException  e) {
-            e.printStackTrace();
-            model.addFlashAttribute("message", "System Errors");
-            model.addFlashAttribute("alert", "danger");
-        }
+        userService.register(dto, model);
         return "redirect:/register";
+    }
+
+    @GetMapping("/register/verify/{code}")
+    public String verify(@PathVariable String code) {
+       userService.verifyAccountByCode(code);
+       return "redirect:/login";
     }
 }

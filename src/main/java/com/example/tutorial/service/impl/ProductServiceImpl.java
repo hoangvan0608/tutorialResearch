@@ -4,6 +4,7 @@ import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.ProductDTO;
 import com.example.tutorial.dto.ResponseDto;
 import com.example.tutorial.entity.ProductEntity;
+import com.example.tutorial.entity.UserEntity;
 import com.example.tutorial.repository.ProductRepository;
 import com.example.tutorial.service.ProductService;
 import com.example.tutorial.utils.MessageResponse;
@@ -11,7 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -36,20 +40,20 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public void save(ProductDTO productRequest, RedirectAttributes model) {
+    public void save(ProductDTO dto, RedirectAttributes model) {
         ProductEntity productEntity = ProductEntity.builder()
-                .categoryId(productRequest.getCategoryId())
-                .colorId(productRequest.getColorId())
-                .memoryId(productRequest.getMemoryId())
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .image(productRequest.getImage())
-                .price(productRequest.getPrice())
-                .id(productRequest.getId())
+                .categoryId(dto.getCategoryId())
+                .colorId(dto.getColorId())
+                .memoryId(dto.getMemoryId())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .image(dto.getImage())
+                .price(dto.getPrice())
+                .id(dto.getId())
                 .build();
         try {
             productRepository.save(productEntity);
-            if (productRequest.getId() == null) {
+            if (dto.getId() == null) {
                 MessageResponse.successAlert(model, messageConfig.getMessage("product.save.success"));
             } else {
                 MessageResponse.successAlert(model, messageConfig.getMessage("product.edit.success"));
@@ -81,5 +85,14 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             MessageResponse.dangerAlert(attributes, messageConfig.getMessage("product.error"));
         }
+    }
+
+    @Override
+    public void findAll(Integer page, Integer perPage, String searchKey, Model model) {
+        Page<ProductEntity> pages = productRepository.findAll(PageRequest.of(page - 1, perPage));
+        model.addAttribute("products", pages.getContent());
+        model.addAttribute("page", page);
+        model.addAttribute("perPage", perPage);
+        model.addAttribute("total", pages.getTotalPages());
     }
 }

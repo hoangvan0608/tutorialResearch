@@ -1,15 +1,13 @@
 package com.example.tutorial.controller.backend;
 
+import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.UserDTO;
 import com.example.tutorial.service.UserService;
 import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -21,14 +19,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    MessageConfig messageConfig;
+
     @GetMapping("/list")
-    public String getListUser(Model model) {
-        List<UserDTO> userDTOList = userService.findAll();
-        model.addAttribute("users", userDTOList);
+    public String getListUser(Model model,
+                              @RequestParam(required = false) String searchKey,
+                              @RequestParam(required = false, defaultValue = "1") Integer page,
+                              @RequestParam(required = false, defaultValue = "5") Integer perPage) {
+        userService.findAll(page, perPage, searchKey, model);
         return "backend/user/user_list";
     }
 
-    @GetMapping("detail/{userId}")
+    @GetMapping("/update/{userId}")
     public String userDetail(@PathVariable Long userId, Model model) {
         UserDTO userDTO = userService.findOneById(userId);
         model.addAttribute("user", userDTO);
@@ -45,13 +48,24 @@ public class UserController {
     public String save(UserDTO userDTO, RedirectAttributes attributes) {
         try {
             userService.save(userDTO);
-            if(userDTO.getId() != null) {
-                MessageResponse.successAlert(attributes, "Cập nhật thông tin tài khoản thành công");
+            if (userDTO.getId() != null) {
+                MessageResponse.successAlert(attributes, messageConfig.getMessage("user.edit.success"));
             } else {
-                MessageResponse.successAlert(attributes, "Thêm tài khoản thành công");
+                MessageResponse.successAlert(attributes, messageConfig.getMessage("user.save.success"));
             }
         } catch (Exception e) {
-            MessageResponse.dangerAlert(attributes,"Có lỗi xảy ra");
+            MessageResponse.dangerAlert(attributes, messageConfig.getMessage("user.error"));
+        }
+        return "redirect:/backend/user/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes model) {
+        try {
+            userService.deleteById(id);
+            MessageResponse.successAlert(model, "user.delete.success");
+        } catch (Exception e) {
+            MessageResponse.dangerAlert(model, "user.error");
         }
         return "redirect:/backend/user/list";
     }

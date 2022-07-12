@@ -34,7 +34,12 @@
                     <td>${user.email}</td>
                     <td>${user.password}</td>
                     <td>${user.role}</td>
-                    <td><a href="/user/${user.id}" class="btn btn-success">Update</a> &nbsp; <a class="btn btn-warning">Delete</a>
+                    <td>
+                        <a href="/backend/user/update/${user.id}" class="btn btn-success">Update</a>
+                        &nbsp;
+                        <a href="/backend/user/delete/${user.id}" class="btn btn-warning">Delete</a>
+                        <a data-toggle="confirmation" class="btn btn-warning" data-title="Xóa tài khoản ${user.fullName}" data-popout="true"
+                           href="/backend/user/delete/${user.id}">Xóa</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -44,6 +49,21 @@
         </c:if>
         </tbody>
     </table>
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item <c:if test="${page == 1}">disabled</c:if>">
+                <a class="page-link" href="/backend/user/list?page=${page - 1}&perPage=${perPage}" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <c:forEach begin="1" end="${total}" step="1" var="num">
+                <li class="page-item <c:if test="${page == num}">active</c:if> ">
+                    <a class="page-link" href="/backend/user/list?page=${num}&perPage=${perPage}">${num}</a></li>
+            </c:forEach>
+
+            <li class="page-item <c:if test="${page == total}">disabled</c:if>">
+                <a class="page-link" href="/backend/user/list?page=${page + 1}&perPage=${perPage}">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 <jsp:include page="../common/foot.jsp"></jsp:include>
 <jsp:include page="../common/js.jsp"></jsp:include>

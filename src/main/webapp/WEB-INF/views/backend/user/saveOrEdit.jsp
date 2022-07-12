@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-confirmation2/dist/bootstrap-confirmation.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" ></script>
     <c:if test="${not empty user}">
         <title>Thông tin tài khoản</title>
     </c:if>
@@ -38,17 +40,26 @@
         </div>
         <div class="form-outline mb-4">
             <label class="form-label" for="form3Example3">Email</label>
-            <input type="email" id="form3Example3" name="email" class="form-control" value="${user.email}"/>
+            <input type="email" id="form3Example3" name="email" class="form-control" <c:if test="${not empty user}">disabled</c:if> value="${user.email}"/>
         </div>
         <div class="form-outline mb-4">
             <label class="form-label" for="form3Example4">Password</label>
             <input type="password" id="form3Example4" name="password" class="form-control" value="${user.password}"/>
         </div>
+        <label class="form-label" for="form3Example4">Loại tài khoản</label>
         <select name="role" class="form-select mb-4">
-            <option selected>Loại tài khoản</option>
+            <option selected>-------</option>
             <option <c:if test="${user.role == 'USER'}"> SELECTED</c:if> value="USER">USER</option>
             <option <c:if test="${user.role == 'ADMIN'}"> SELECTED</c:if> value="ADMIN">ADMIN</option>
         </select>
+        <div class="col-md-12 mb-4">
+            <label class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" name="address" value="${user.address}" />
+        </div>
+        <div class="col-md-12 mb-4">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control"  name="phone" value="${user.phone}" />
+        </div>
         <button type="submit" class="btn btn-primary btn-block mb-4">
             <c:if test="${not empty user}">
                 Cập nhật
@@ -85,3 +96,24 @@
     });
 </script>
 </html>
+
+<script type="text/javascript">
+    // add row
+    $("#addRow").click(function () {
+        var html = '';
+        html += '<div id="inputFormRow">';
+        html += '<div class="input-group mb-3">';
+        html += '<input type="text" name="phones[]" class="form-control m-input" placeholder="Số điện thoại" autocomplete="off">';
+        html += '<div class="input-group-append">';
+        html += '<button id="removeRow" type="button" class="btn btn-danger">Xóa</button>';
+        html += '</div>';
+        html += '</div>';
+
+        $('#newRow').append(html);
+    });
+
+    // remove row
+    $(document).on('click', '#removeRow', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
+</script>

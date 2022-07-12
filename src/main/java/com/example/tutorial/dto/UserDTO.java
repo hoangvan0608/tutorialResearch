@@ -26,4 +26,9 @@ public class UserDTO {
 //    @NotBlank(message = "Vui lòng điền Re-password")
     private String repass;
     private String role;
+
+    private String address;
+    private String phone;
+    private String code;
+    private String ACTIVE;
 }

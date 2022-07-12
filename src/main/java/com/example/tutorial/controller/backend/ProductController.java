@@ -29,27 +29,37 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("list")
+    public String homeProduct(Model model,
+                              @RequestParam(required = false) String searchKey,
+                              @RequestParam(required = false, defaultValue = "1") Integer page,
+                              @RequestParam(required = false, defaultValue = "5") Integer perPage) {
+        productService.findAll(page, perPage, searchKey, model);
+        return "/backend/product/list";
+    }
+
     @GetMapping("create")
     public String createProductPage() {
         return "backend/product/saveOrEdit";
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("update/{id}")
     public String updatePage(@PathVariable Long id, Model model) {
         ProductDTO productDTO = productService.findOneById(id);
         model.addAttribute("product", productDTO);
         return "/backend/product/saveOrEdit";
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("delete/{id}")
+    public String deleteProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         productService.deleteById(id, redirectAttributes);
+        return "redirect:/backend/product/";
     }
 
     @PostMapping("save")
     public String saveProduct(ProductDTO productRequest, RedirectAttributes model) {
         productService.save(productRequest, model);
-        return "redirect:/backend/product/create";
+        return "redirect:/backend/product/";
     }
 
     @ModelAttribute(name = "categories")
