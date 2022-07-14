@@ -12,6 +12,7 @@ import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EmailServiceImpl emailService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public void findAll(Integer page, Integer perPage, String key, Model model) {
@@ -118,16 +122,16 @@ public class UserServiceImpl implements UserService {
         userEntity.setFullName(dto.getFullName());
         userEntity.setEmail(dto.getEmail());
         userEntity.setRole(CONSTANT.ROLE_USER);
-        userEntity.setPassword(dto.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         userEntity.setCode(UUID.randomUUID().toString());
         userEntity.setACTIVE(false);
         userEntity.setInsertTime(Timestamp.valueOf(LocalDateTime.now()));
         try {
-            emailService.sendMail(userEntity);
+//            emailService.sendMail(userEntity);
             userRepository.save(userEntity);
             MessageResponse.successAlert(model, messageConfig.getMessage("register.success"));
         } catch (Exception e) {
-            MessageResponse.successAlert(model, messageConfig.getMessage("system.error"));
+            MessageResponse.dangerAlert(model, messageConfig.getMessage("system.error"));
         }
     }
 
