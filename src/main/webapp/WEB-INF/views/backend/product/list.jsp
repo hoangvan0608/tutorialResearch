@@ -17,13 +17,9 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">ID sản phẩm</th>
+            <th scope="col">ID</th>
             <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Thể loại</th>
-            <th scope="col">Màu sắc</th>
-            <th scope="col">Dung lượng</th>
             <th scope="col">Giá sản phẩm</th>
-            <th scope="col">Mô tả sản phẩm</th>
             <th scope="col">Hình ảnh</th>
             <th scope="col">Thao tác</th>
         </tr>
@@ -32,15 +28,11 @@
         <c:if test="${ products != null }">
             <c:forEach items="${products}" var="product">
                 <tr>
-                    <td>${product.id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.categoryId}</td>
-                    <td>${product.colorId}</td>
-                    <td>${product.memoryId}</td>
-                    <td>${product.price}</td>
-                    <td>${product.description}</td>
-                    <td><img style="max-width: 200px; height: 250px; object-fit: contain; width: 100%" src="${product.image}"> </td>
-                    <td><a href="/backend/product/update/${product.id}" class="btn btn-success">Update</a> &nbsp; <a href="/backend/product/delete/${product.id}" class="btn btn-warning">Delete</a>
+                    <td class="col-1">${product.id}</td>
+                    <td class="col-3">${product.name}</td>
+                    <td class="col-2">${product.price}</td>
+                    <td class="col-3"><img style="max-width: 200px; height: 250px; object-fit: contain; width: 100%" src="${product.image}"> </td>
+                    <td class="col-3"><a href="/backend/product/update/${product.id}" class="btn btn-success">Update</a> &nbsp; <a href="/backend/product/delete/${product.id}" class="btn btn-warning">Delete</a>
                     </td>
                 </tr>
             </c:forEach>

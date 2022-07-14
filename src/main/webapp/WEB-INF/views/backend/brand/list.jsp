@@ -17,23 +17,23 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Tên thể loại</th>
+            <th scope="col">ID Brand</th>
+            <th scope="col">Brand Name</th>
             <th scope="col">Thao tác</th>
         </tr>
         </thead>
         <tbody>
-        <c:if test="${ categories != null }">
-            <c:forEach items="${categories}" var="category">
+        <c:if test="${ brands != null }">
+            <c:forEach items="${brands}" var="brand">
                 <tr>
-                    <td class="col-3">${category.id}</td>
-                    <td class="col-6">${category.name}</td>
-                    <td class="col-3"><a href="/backend/category/update/${category.id}" class="btn btn-success">Update</a> &nbsp; <a href="/backend/category/delete/${category.id}" class="btn btn-warning">Delete</a>
+                    <td class="col-3">${brand.id}</td>
+                    <td class="col-6">${brand.name}</td>
+                    <td class="col-3"><a href="/backend/brand/update/${brand.id}" class="btn btn-success">Update</a> &nbsp; <a href="/backend/brand/delete/${brand.id}" class="btn btn-warning">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
         </c:if>
-        <c:if test="${ categories == null }">
+        <c:if test="${ brands == null }">
             <h1>Không có thể loại</h1>
         </c:if>
         </tbody>

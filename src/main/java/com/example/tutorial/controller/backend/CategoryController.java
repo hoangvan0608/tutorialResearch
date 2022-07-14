@@ -1,15 +1,13 @@
 package com.example.tutorial.controller.backend;
 
+import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.CategoryDTO;
 import com.example.tutorial.service.CategoryService;
 import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -19,6 +17,9 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    MessageConfig messageConfig;
 
     @GetMapping("/create")
     public String createPage() {
@@ -35,10 +36,12 @@ public class CategoryController {
         }
     }
 
-    @GetMapping(path = "/list")
-    public String getCategories(Model model) {
-        List<CategoryDTO> list = categoryService.findAll();
-        model.addAttribute("categories", list);
+    @GetMapping("/list")
+    public String homeCategory(Model model,
+                            @RequestParam(required = false) String searchKey,
+                            @RequestParam(required = false, defaultValue = "1") Integer page,
+                            @RequestParam(required = false, defaultValue = "5") Integer perPage) {
+        categoryService.findAll(page, perPage, searchKey, model);
         return "backend/category/list";
     }
 
@@ -46,14 +49,14 @@ public class CategoryController {
     public String update(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         CategoryDTO dto = categoryService.findOne(id);
         if (dto == null) {
-            MessageResponse.warningAlert(redirectAttributes, "Không tìm thấy thể loại với id là : " + id);
+            MessageResponse.warningAlert(redirectAttributes, messageConfig.getMessage("id_not_found"));
             return "redirect:/backend/category/list";
         }
         model.addAttribute("category", dto);
         return "backend/category/saveOrEdit";
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id, RedirectAttributes model) {
         categoryService.deleteById(id, model);
         return "redirect:/backend/category/list";

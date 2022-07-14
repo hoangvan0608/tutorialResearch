@@ -20,7 +20,6 @@
             <th scope="col">ID</th>
             <th scope="col">Họ và tên</th>
             <th scope="col">Email</th>
-            <th scope="col">Mật khẩu</th>
             <th scope="col">Loại tài khoản</th>
             <th scope="col">Thao tác</th>
         </tr>
@@ -32,7 +31,6 @@
                     <th scope="row">${user.id}</th>
                     <td>${user.fullName}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
                     <td>${user.role}</td>
                     <td>
                         <a href="/backend/user/update/${user.id}" class="btn btn-success">Update</a>

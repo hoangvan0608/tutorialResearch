@@ -1,9 +1,9 @@
 package com.example.tutorial.service.impl;
 
 import com.example.tutorial.config.language.MessageConfig;
-import com.example.tutorial.entity.MemoryEntity;
-import com.example.tutorial.repository.MemoryRepository;
-import com.example.tutorial.service.MemoryService;
+import com.example.tutorial.entity.BrandEntity;
+import com.example.tutorial.repository.BrandRepository;
+import com.example.tutorial.service.BrandService;
 import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,24 +16,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Service
-public class MemoryServiceImpl implements MemoryService {
+public class BrandServiceImpl implements BrandService {
     @Autowired
-    private MemoryRepository memoryRepository;
+    BrandRepository brandRepository;
     @Autowired
     MessageConfig messageConfig;
 
     @Override
-    public void save(MemoryEntity entity, RedirectAttributes model) {
-        if (StringUtils.isEmpty(entity.getName())) {
+    public void save(BrandEntity brand, RedirectAttributes model) {
+        if (StringUtils.isEmpty(brand.getName()) ) {
             MessageResponse.dangerAlert(model, messageConfig.getMessage("data.error"));
         }
         try {
-            if (entity.getId() == null) {
+            if (brand.getId() == null) {
                 MessageResponse.successAlert(model, messageConfig.getMessage("save.success"));
             } else {
                 MessageResponse.successAlert(model, messageConfig.getMessage("update.success"));
             }
-            memoryRepository.save(entity);
+            brandRepository.save(brand);
         } catch (Exception e) {
             e.printStackTrace();
             MessageResponse.dangerAlert(model, messageConfig.getMessage("system.error"));
@@ -42,22 +42,23 @@ public class MemoryServiceImpl implements MemoryService {
 
     @Override
     public void findAll(Integer page, Integer perPage, String searchKey, Model model) {
-        Page<MemoryEntity> pages = memoryRepository.findAll(PageRequest.of(page - 1, perPage));
-        model.addAttribute("memories", pages.getContent());
+        Page<BrandEntity> pages = brandRepository.findAll(PageRequest.of(page - 1, perPage));
+        model.addAttribute("brands", pages.getContent());
         model.addAttribute("page", page);
         model.addAttribute("perPage", perPage);
         model.addAttribute("total", pages.getTotalPages());
+
     }
 
     @Override
-    public MemoryEntity findOne(Long id) {
-        return memoryRepository.findById(id).get();
+    public BrandEntity findOne(Long id) {
+        return brandRepository.findById(id).get();
     }
 
     @Override
     public void deleteById(Long id, RedirectAttributes model) {
         try {
-            memoryRepository.deleteById(id);
+            brandRepository.deleteById(id);
             MessageResponse.successAlert(model, messageConfig.getMessage("delete.success"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +67,7 @@ public class MemoryServiceImpl implements MemoryService {
     }
 
     @Override
-    public List<MemoryEntity> findAll() {
-        return memoryRepository.findAll();
+    public List<BrandEntity> findAll() {
+        return brandRepository.findAll();
     }
 }

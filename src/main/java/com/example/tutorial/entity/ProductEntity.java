@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,12 +31,12 @@ public class ProductEntity extends BaseModel{
     @Column(nullable = false)
     private Long price;
 
-    @Column(nullable = false)
+    private Long brandId;
+
     private Long categoryId;
 
-    @Column
+    private Long colorId;
+
     private Long memoryId;
 
-    @Column
-    private Long colorId;
 }

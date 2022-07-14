@@ -9,14 +9,9 @@ import com.example.tutorial.repository.UserRepository;
 import com.example.tutorial.service.UserService;
 import com.example.tutorial.utils.CONSTANT;
 import com.example.tutorial.utils.MessageResponse;
-import org.apache.catalina.User;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,13 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private ModelMapper modelMapper;
     @Autowired
     private UserRepository userRepository;
 
@@ -75,10 +67,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserDTO dto) {
+    public void save(UserDTO dto, RedirectAttributes attributes) {
         UserEntity userEntity = null;
+        if(userRepository.existsByEmail(dto.getEmail())) {
+            MessageResponse.dangerAlert(attributes, String.format(messageConfig.getMessage("email.error"), dto.getEmail()));
+            return;
+        }
         if (dto.getId() == null) {
             userEntity = new UserEntity();
+            userEntity.setEmail(dto.getEmail());
             userEntity.setACTIVE(true);
             userEntity.setCode(UUID.randomUUID().toString());
             userEntity.setInsertTime(Timestamp.valueOf(LocalDateTime.now()));
@@ -89,7 +86,6 @@ public class UserServiceImpl implements UserService {
         }
         if (userEntity != null) {
             userEntity.setFullName(dto.getFullName());
-            userEntity.setEmail(dto.getEmail());
             userEntity.setRole(dto.getRole());
             userEntity.setPassword(dto.getPassword());
             userRepository.save(userEntity);
@@ -99,14 +95,15 @@ public class UserServiceImpl implements UserService {
                 userDetail.setUserId(userEntity.getId());
                 userDetail.setAddress(dto.getAddress());
                 userDetail.setPhoneNumber(dto.getPhone());
-                userDetail.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
                 userDetailRepository.save(userDetail);
             }
         }
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
+        userDetailRepository.deleteAllByUserId(id);
         userRepository.deleteById(id);
     }
 
@@ -114,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void register(UserDTO dto, RedirectAttributes model) {
         if (userRepository.findUserEntityByEmail(dto.getEmail()) != null) {
-            MessageResponse.warningAlert(model, messageConfig.getMessage("user.error.duplicate.email"));
+            MessageResponse.warningAlert(model, messageConfig.getMessage("email.error"));
             return;
         }
         UserEntity userEntity = new UserEntity();
@@ -128,9 +125,9 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail(userEntity);
             userRepository.save(userEntity);
-            MessageResponse.successAlert(model, messageConfig.getMessage("user.register.success"));
+            MessageResponse.successAlert(model, messageConfig.getMessage("register.success"));
         } catch (Exception e) {
-            MessageResponse.successAlert(model, messageConfig.getMessage("user.error"));
+            MessageResponse.successAlert(model, messageConfig.getMessage("system.error"));
         }
     }
 

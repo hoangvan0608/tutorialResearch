@@ -2,10 +2,8 @@ package com.example.tutorial.service.impl;
 
 import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.ProductDTO;
-import com.example.tutorial.dto.ResponseDto;
-import com.example.tutorial.entity.ProductEntity;
-import com.example.tutorial.entity.UserEntity;
-import com.example.tutorial.repository.ProductRepository;
+import com.example.tutorial.entity.*;
+import com.example.tutorial.repository.*;
 import com.example.tutorial.service.ProductService;
 import com.example.tutorial.utils.MessageResponse;
 import org.modelmapper.ModelMapper;
@@ -29,6 +27,21 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
 
     @Autowired
+    MemoryRepository memoryRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    BrandRepository brandRepository;
+
+    @Autowired
+    ColorRepository colorRepository;
+
+    @Autowired
+    HashTagRepository hashTagRepository;
+
+    @Autowired
     MessageConfig messageConfig;
 
     @Override
@@ -41,26 +54,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(ProductDTO dto, RedirectAttributes model) {
-        ProductEntity productEntity = ProductEntity.builder()
-                .categoryId(dto.getCategoryId())
-                .colorId(dto.getColorId())
-                .memoryId(dto.getMemoryId())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .image(dto.getImage())
-                .price(dto.getPrice())
-                .id(dto.getId())
-                .build();
+       ProductEntity productEntity = null;
+       if(dto.getId() == null)
+       {
+           productEntity = new ProductEntity();
+       }
+       else {
+           productEntity = productRepository.findById(dto.getId()).get();
+       }
+        productEntity.setName(dto.getName());
+        productEntity.setDescription(dto.getDescription());
+        productEntity.setImage(dto.getImage());
+        productEntity.setPrice(dto.getPrice());
+        productEntity.setBrandId(dto.getBrandId());
+        productEntity.setCategoryId(dto.getCategoryId());
+        productEntity.setColorId(dto.getColorId());
+        productEntity.setMemoryId(dto.getMemoryId());
         try {
             productRepository.save(productEntity);
             if (dto.getId() == null) {
-                MessageResponse.successAlert(model, messageConfig.getMessage("product.save.success"));
+                MessageResponse.successAlert(model, messageConfig.getMessage("save.success"));
             } else {
-                MessageResponse.successAlert(model, messageConfig.getMessage("product.edit.success"));
+                MessageResponse.successAlert(model, messageConfig.getMessage("update.success"));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            MessageResponse.dangerAlert(model, messageConfig.getMessage("product.error"));
+            MessageResponse.dangerAlert(model, messageConfig.getMessage("system.error"));
         }
     }
 
@@ -80,15 +99,16 @@ public class ProductServiceImpl implements ProductService {
     public void deleteById(Long id, RedirectAttributes attributes) {
         try {
             productRepository.deleteById(id);
-            MessageResponse.successAlert(attributes, messageConfig.getMessage("product.delete.success"));
+            MessageResponse.successAlert(attributes, messageConfig.getMessage("delete.success"));
         } catch (Exception e) {
             e.printStackTrace();
-            MessageResponse.dangerAlert(attributes, messageConfig.getMessage("product.error"));
+            MessageResponse.dangerAlert(attributes, messageConfig.getMessage("system.error"));
         }
     }
 
     @Override
     public void findAll(Integer page, Integer perPage, String searchKey, Model model) {
+        List<ProductEntity> list = productRepository.findAll();
         Page<ProductEntity> pages = productRepository.findAll(PageRequest.of(page - 1, perPage));
         model.addAttribute("products", pages.getContent());
         model.addAttribute("page", page);

@@ -52,11 +52,11 @@
             <option <c:if test="${user.role == 'USER'}"> SELECTED</c:if> value="USER">USER</option>
             <option <c:if test="${user.role == 'ADMIN'}"> SELECTED</c:if> value="ADMIN">ADMIN</option>
         </select>
-        <div class="col-md-12 mb-4">
+        <div class="mb-4">
             <label class="form-label">Địa chỉ</label>
             <input type="text" class="form-control" name="address" value="${user.address}" />
         </div>
-        <div class="col-md-12 mb-4">
+        <div class="mb-4">
             <label class="form-label">Số điện thoại</label>
             <input type="text" class="form-control"  name="phone" value="${user.phone}" />
         </div>

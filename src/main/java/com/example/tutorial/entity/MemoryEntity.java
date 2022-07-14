@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Entity(name = "memory")
 @Data
-public class MemoryEntity  extends  BaseModel{
+public class MemoryEntity extends  EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

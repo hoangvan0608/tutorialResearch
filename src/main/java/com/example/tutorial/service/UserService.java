@@ -11,7 +11,7 @@ public interface UserService {
 
     UserDTO findOneById(Long userId);
 
-    void save(UserDTO dto);
+    void save(UserDTO dto, RedirectAttributes attributes);
 
     void deleteById(Long id);
 

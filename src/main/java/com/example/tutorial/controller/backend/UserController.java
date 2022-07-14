@@ -47,14 +47,14 @@ public class UserController {
     @PostMapping("/save")
     public String save(UserDTO userDTO, RedirectAttributes attributes) {
         try {
-            userService.save(userDTO);
+            userService.save(userDTO, attributes);
             if (userDTO.getId() != null) {
-                MessageResponse.successAlert(attributes, messageConfig.getMessage("user.edit.success"));
+                MessageResponse.successAlert(attributes, messageConfig.getMessage("update.success"));
             } else {
-                MessageResponse.successAlert(attributes, messageConfig.getMessage("user.save.success"));
+                MessageResponse.successAlert(attributes, messageConfig.getMessage("save.success"));
             }
         } catch (Exception e) {
-            MessageResponse.dangerAlert(attributes, messageConfig.getMessage("user.error"));
+            MessageResponse.dangerAlert(attributes, messageConfig.getMessage("system.error"));
         }
         return "redirect:/backend/user/list";
     }
@@ -63,9 +63,9 @@ public class UserController {
     public String deleteUser(@PathVariable Long id, RedirectAttributes model) {
         try {
             userService.deleteById(id);
-            MessageResponse.successAlert(model, "user.delete.success");
+            MessageResponse.successAlert(model, messageConfig.getMessage("delete.success"));
         } catch (Exception e) {
-            MessageResponse.dangerAlert(model, "user.error");
+            MessageResponse.dangerAlert(model, messageConfig.getMessage("system.error"));
         }
         return "redirect:/backend/user/list";
     }

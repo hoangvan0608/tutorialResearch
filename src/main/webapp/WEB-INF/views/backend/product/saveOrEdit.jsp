@@ -37,7 +37,7 @@
 
         </div>
         <div class="row mb-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Danh mục</label>
                 <select name="categoryId" class="form-select">
                     <c:forEach items="${categories}" var="category">
@@ -46,7 +46,16 @@
                     </c:forEach>
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <label class="form-label">Thương hiệu</label>
+                <select name="brandId" class="form-select">
+                    <c:forEach items="${brands}" var="brand">
+                        <option <c:if test="${product.brandId == brand.id}"> selected</c:if>
+                                value="${brand.id}">${brand.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-md-3">
                 <label class="form-label">Dung lượng</label>
                 <select name="memoryId" class="form-select">
                     <c:forEach items="${memories}" var="memory">
@@ -55,7 +64,7 @@
                     </c:forEach>
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Màu sắc</label>
                 <select name="colorId" class="form-select">
                     <c:forEach items="${colors}" var="color">
@@ -64,17 +73,16 @@
                     </c:forEach>
                 </select>
             </div>
-
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+            <label for="exampleInputPassword1" class="form-label">Mô tả </label>
             <input type="text" class="form-control" id="exampleInputPassword1" name="description" required
                    <c:if test="${not empty product}">value="${product.description}" </c:if> >
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="fileUploadId" class="form-label">Image</label>
-                <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}"> value="${product.image}" </c:if> name="image" hidden/>
+                <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}">value="${product.image}"</c:if> name="image" hidden/>
                 <input type="file" id="fileUploadId" class="form-control"/><%-- thẻ input chon ảnh--%>
                 <div></div>
             </div>
@@ -83,6 +91,22 @@
                     <img id="outputImage" width="100px" <c:if test="${not empty product}"> src="${product.image}" </c:if>/>
                 </div>
             </div>
+<%--            <div class="row">--%>
+<%--                <div class="col-lg-12">--%>
+<%--                    <div id="inputFormRow">--%>
+<%--                        <div class="input-group mb-3">--%>
+<%--                            <input type="file" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">--%>
+<%--                            <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}"> value="${product.image}" </c:if> name="image" hidden/>--%>
+<%--                            <div class="input-group-append">--%>
+<%--                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+
+<%--                    <div id="newRow"></div>--%>
+<%--                    <button id="addRow" type="button" class="btn btn-info">Add Row</button>--%>
+<%--                </div>--%>
+<%--            </div>--%>
 
             <script>
                 $('#fileUploadId').on("change", function () {
@@ -114,7 +138,24 @@
 
                         }
                     });
-                })
+                });
+                $("#addRow").click(function () {
+                    var html = '';
+                    html += '<div id="inputFormRow">';
+                    html += '<div class="input-group mb-3">';
+                    html += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
+                    html += '<div class="input-group-append">';
+                    html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+                    html += '</div>';
+                    html += '</div>';
+
+                    $('#newRow').append(html);
+                });
+
+                // remove row
+                $(document).on('click', '#removeRow', function () {
+                    $(this).closest('#inputFormRow').remove();
+                });
             </script>
         </div>
         <div class="d-grid gap-2 mb-3">

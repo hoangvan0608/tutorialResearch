@@ -7,8 +7,8 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>
+<%--                <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>--%>
+<%--                <li><a href="#" class="nav-link px-2 link-dark">Inventory</a></li>--%>
                 <li>
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
@@ -29,6 +29,54 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/backend/category/list">Danh sách</a></li>
                             <li><a class="dropdown-item" href="/backend/category/create">Tạo mới</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Nhãn hiệu
+                        </button>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/backend/brand/list">Danh sách</a></li>
+                            <li><a class="dropdown-item" href="/backend/brand/create">Tạo mới</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Màu sắc
+                        </button>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/backend/color/list">Danh sách</a></li>
+                            <li><a class="dropdown-item" href="/backend/color/create">Tạo mới</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bộ nhớ
+                        </button>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/backend/memory/list">Danh sách</a></li>
+                            <li><a class="dropdown-item" href="/backend/memory/create">Tạo mới</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sản phẩm
+                        </button>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/backend/product/list">Danh sách</a></li>
+                            <li><a class="dropdown-item" href="/backend/product/create">Tạo mới</a></li>
                         </ul>
                     </div>
                 </li>

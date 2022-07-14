@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity(name = "user_detail")
-public class UserDetailEntity extends BaseModel{
+public class UserDetailEntity extends EntityBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
