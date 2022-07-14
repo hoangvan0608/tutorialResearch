@@ -21,7 +21,7 @@
         <h2 class="text-center">Thêm sản phẩm</h2>
     </c:if>
     <jsp:include page="../common/message.jsp"></jsp:include>
-    <form action="/backend/product/save" method="post" >
+    <form action="/backend/product/save" method="post">
         <input type="hidden" name="id" value="${product.id}">
         <div class="row mb-3">
             <div class="col-md-8">
@@ -82,31 +82,17 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="fileUploadId" class="form-label">Image</label>
-                <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}">value="${product.image}"</c:if> name="image" hidden/>
+                <input type="text" class="form-control" id="fileUploadName"
+                       <c:if test="${not empty product}">value="${product.image}"</c:if> name="image" hidden/>
                 <input type="file" id="fileUploadId" class="form-control"/><%-- thẻ input chon ảnh--%>
                 <div></div>
             </div>
             <div class="col-md-6">
                 <div>
-                    <img id="outputImage" width="100px" <c:if test="${not empty product}"> src="${product.image}" </c:if>/>
+                    <img id="outputImage" width="100px" <c:if
+                            test="${not empty product}"> src="${product.image}" </c:if>/>
                 </div>
             </div>
-<%--            <div class="row">--%>
-<%--                <div class="col-lg-12">--%>
-<%--                    <div id="inputFormRow">--%>
-<%--                        <div class="input-group mb-3">--%>
-<%--                            <input type="file" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">--%>
-<%--                            <input type="text" class="form-control" id="fileUploadName" <c:if test="${not empty product}"> value="${product.image}" </c:if> name="image" hidden/>--%>
-<%--                            <div class="input-group-append">--%>
-<%--                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-<%--                    <div id="newRow"></div>--%>
-<%--                    <button id="addRow" type="button" class="btn btn-info">Add Row</button>--%>
-<%--                </div>--%>
-<%--            </div>--%>
 
             <script>
                 $('#fileUploadId').on("change", function () {
@@ -139,11 +125,32 @@
                         }
                     });
                 });
+            </script>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <div id="inputFormRow">
+                    <div class="input-group mb-3">
+                        <input type="file" onchange="uploadImages(this)" class="form-control m-input" autocomplete="off">
+                        <input type="text" class="fileuploadName"  class="form-control" <c:if test="${not empty product}"> value="${product.image}" </c:if> name="paths[]" hidden/>
+                        <div class="input-group-append">
+                            <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="newRow"></div>
+                <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+            </div>
+            <div class="col-6 ">
+                <img class="outputImage" src="">
+            </div>
+            <script>
                 $("#addRow").click(function () {
                     var html = '';
                     html += '<div id="inputFormRow">';
                     html += '<div class="input-group mb-3">';
-                    html += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
+                    html += '<input type="file" name="paths[]" class="form-control m-input" autocomplete="off">';
                     html += '<div class="input-group-append">';
                     html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
                     html += '</div>';
@@ -156,6 +163,38 @@
                 $(document).on('click', '#removeRow', function () {
                     $(this).closest('#inputFormRow').remove();
                 });
+
+                var uploadImage = function (img) {
+                    var file = $(img)[0].files[0]
+                    var reader = new FileReader();
+                    var output = $(img).parent().parent().parent().find('.outputImage');
+                    var fileuploadName = $(img).parent().find('.fileuploadName');
+                    reader.onload = function () {
+                        output.attr('src', reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                    var data = new FormData();
+                    data.append("file", file, file.name);
+                    $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "/backend/product/upload",
+                        data: data,
+                        // prevent jQuery from automatically transforming the data into a query string
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        timeout: 1000000,
+                        success: function (data, textStatus, jqXHR) {
+                            fileuploadName.val(data);
+                            alert("Tải file " + data + " thành công");
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("tải file thất bại")
+
+                        }
+                    });
+                }
             </script>
         </div>
         <div class="d-grid gap-2 mb-3">
