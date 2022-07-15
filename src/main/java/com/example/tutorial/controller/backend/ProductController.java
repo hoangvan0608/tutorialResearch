@@ -1,5 +1,6 @@
 package com.example.tutorial.controller.backend;
 
+import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.CategoryDTO;
 import com.example.tutorial.dto.ProductDTO;
 import com.example.tutorial.entity.BrandEntity;
@@ -8,6 +9,8 @@ import com.example.tutorial.entity.ColorEntity;
 import com.example.tutorial.entity.MemoryEntity;
 import com.example.tutorial.repository.CategoryRepository;
 import com.example.tutorial.service.*;
+import com.example.tutorial.utils.MessageResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,9 @@ public class ProductController {
     private ColorService colorService;
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    MessageConfig messageConfig;
 
     @GetMapping("list")
     public String homeProduct(Model model,
@@ -66,10 +72,15 @@ public class ProductController {
     }
 
     @GetMapping("update/{id}")
-    public String updatePage(@PathVariable Long id, Model model) {
-        ProductDTO productDTO = productService.findOneById(id);
-        model.addAttribute("product", productDTO);
-        return "/backend/product/saveOrEdit";
+    public String updatePage(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            ProductDTO productDTO = productService.findOneById(id);
+            model.addAttribute("product", productDTO);
+            return "/backend/product/saveOrEdit";
+        } catch (Exception e) {
+            MessageResponse.dangerAlert(redirectAttributes, messageConfig.getMessage("system.error"));
+            return "redirect:/backend/product/list";
+        }
     }
 
     @GetMapping("delete/{id}")
@@ -80,7 +91,11 @@ public class ProductController {
 
     @PostMapping("save")
     public String saveProduct(ProductDTO productRequest, RedirectAttributes model) {
-        productService.save(productRequest, model);
+        if(productRequest.getId() == null) {
+            productService.save(productRequest, model);
+        } else {
+            productService.update(productRequest, model);
+        }
         return "redirect:/backend/product/list";
     }
 

@@ -11,6 +11,8 @@ public interface ProductService {
 
     void save(ProductDTO productRequest, RedirectAttributes model);
 
+    void update(ProductDTO productRequest, RedirectAttributes model);
+
     ProductDTO findOneById(Long id);
 
     void deleteById(Long id, RedirectAttributes model);

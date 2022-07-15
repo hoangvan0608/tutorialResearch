@@ -113,7 +113,15 @@
                 <div class="text-center fs-6">
                     <a href="#">Forget password?</a> or <a href="#">Sign up</a>
                 </div>
+                <jsp:include page="../common/message.jsp"></jsp:include>
+
             </div>
         </body>
 
         </html>
+
+<%--<c:if test="${not empty message}">--%>
+<%--    <script>--%>
+<%--        alert(${message})--%>
+<%--    </script>--%>
+<%--</c:if>--%>
