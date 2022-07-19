@@ -102,7 +102,7 @@
                 <form class="p-3 mt-3" action="/doLogin" method="post">
                     <div class="form-field d-flex align-items-center">
                         <span class="far fa-user"></span>
-                        <input type="text" name="username" id="userName" placeholder="Username">
+                        <input type="text" name="email" id="userName" placeholder="Username">
                     </div>
                     <div class="form-field d-flex align-items-center">
                         <span class="fas fa-key"></span>

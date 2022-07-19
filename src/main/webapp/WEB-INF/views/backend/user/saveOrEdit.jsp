@@ -33,32 +33,45 @@
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="form3Example1">Họ và tên</label>
-                    <input type="text" id="form3Example1" name="fullName" class="form-control" value="${user.fullName}"/>
+                    <input type="text" id="form3Example1" name="fullName" class="form-control" value="${user.fullName}" required/>
                     <input name="id" value="${user.id}" hidden>
                 </div>
             </div>
         </div>
         <div class="form-outline mb-4">
             <label class="form-label" for="form3Example3">Email</label>
-            <input type="email" id="form3Example3" name="email" class="form-control" <c:if test="${not empty user}">disabled</c:if> value="${user.email}"/>
+            <input type="email" id="form3Example3" name="email" class="form-control" <c:if test="${not empty user}">disabled</c:if> value="${user.email}" required/>
         </div>
-        <div class="form-outline mb-4">
+        <div class="form-outline mb-4 <c:if test="${not empty user.id }"> d-none </c:if> ">
             <label class="form-label" for="form3Example4">Password</label>
-            <input type="password" id="form3Example4" name="password" class="form-control" value="${user.password}"/>
+            <input type="password" id="form3Example4" name="password" class="form-control" <c:if test="${not empty user.id }"> value="${user.password}"</c:if> required/>
         </div>
-        <label class="form-label" for="form3Example4">Loại tài khoản</label>
-        <select name="role" class="form-select mb-4">
-            <option selected>-------</option>
-            <option <c:if test="${user.role == 'USER'}"> SELECTED</c:if> value="USER">USER</option>
-            <option <c:if test="${user.role == 'ADMIN'}"> SELECTED</c:if> value="ADMIN">ADMIN</option>
-        </select>
+        <div class="row mb-4">
+            <div class="col-6">
+                <label class="form-label" for="form3Example4">Loại tài khoản</label>
+                <select name="role" class="form-select" required>
+                    <option selected>------------------------</option>
+                    <option <c:if test="${user.role == 'USER'}"> selected</c:if> value="USER">USER</option>
+                    <option <c:if test="${user.role == 'ADMIN'}"> selected</c:if> value="ADMIN">ADMIN</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="form-label" for="form3Example4">Trạng thái</label>
+                <select name="active" class="form-select" required>
+                    <option>------------------------</option>
+                    <option <c:if test="${user.active == '1'}"> selected</c:if> value="1">KÍCH HOẠT</option>
+                    <option <c:if test="${user.active == '0'}"> selected</c:if> value="0">DỪNG KÍCH HOẠT</option>
+                </select>
+            </div>
+        </div>
+
         <div class="mb-4">
             <label class="form-label">Địa chỉ</label>
-            <input type="text" class="form-control" name="address" value="${user.address}" />
+            <input type="text" class="form-control" name="address" <c:if test="${not empty user.id }"> value="${user.address}" </c:if> required/>
         </div>
         <div class="mb-4">
             <label class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control"  name="phone" value="${user.phone}" />
+            <input type="text" class="form-control"  name="phone" <c:if test="${not empty user.id }"> value="${user.phone}" </c:if> required/>
         </div>
         <button type="submit" class="btn btn-primary btn-block mb-4">
             <c:if test="${not empty user}">

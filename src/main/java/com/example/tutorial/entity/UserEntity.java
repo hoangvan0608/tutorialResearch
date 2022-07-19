@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user", schema = "t3htutorial", catalog = "")
+@Table(name = "user", schema = "t3htutorial")
 public class UserEntity extends BaseModel implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -40,7 +40,7 @@ public class UserEntity extends BaseModel implements UserDetails {
     private String code;
 
     @Column
-    private Boolean ACTIVE;
+    private Boolean active;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false, insertable = false)
@@ -75,6 +75,6 @@ public class UserEntity extends BaseModel implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.ACTIVE;
+        return this.active;
     }
 }

@@ -1,7 +1,10 @@
 package com.example.tutorial.controller.backend;
 
+import com.example.tutorial.config.language.MessageConfig;
+import com.example.tutorial.dto.LoginRequest;
 import com.example.tutorial.dto.UserDTO;
 import com.example.tutorial.service.UserService;
+import com.example.tutorial.utils.CONSTANT;
 import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,14 +21,30 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    MessageConfig messageConfig;
+
 
     @GetMapping("/login")
     public String login(@RequestParam(name = "error", required = false) String error, RedirectAttributes model, Model model1) {
         if (!StringUtils.isEmpty(error)) {
-            MessageResponse.dangerAlert(model, "Sai tài khoản hoặc mật khẩu!");
+            MessageResponse.dangerAlert(model, messageConfig.getMessage("login_error"));
             return "redirect:/login";
         }
         return "login";
+    }
+
+    @PostMapping("/doLogin")
+    public String loginProcess(LoginRequest loginRequest, RedirectAttributes redirectAttributes, Model model) {
+        Integer code = userService.getAccountByUsername(loginRequest);
+        if (code == CONSTANT.EMAIL_NOT_FOUND) {
+            MessageResponse.dangerAlert(redirectAttributes, messageConfig.getMessage("email_not_found"));
+            return "redirect:/login";
+        } else if (code == CONSTANT.PASSWORD_INVALID) {
+            MessageResponse.dangerAlert(redirectAttributes, messageConfig.getMessage("password_invalid"));
+            return "redirect:/login";
+        }
+        return "redirect:/backend/product/list";
     }
 
     @GetMapping("/register")

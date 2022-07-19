@@ -19,11 +19,9 @@ public class EmailServiceImpl {
         mailMessage.setTo(userEntity.getEmail());
         mailMessage.setSubject("Verify your account");
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("<h1>Xác Thực tài khoản </h1>")
-                .append("<h2>Vui lòng bấm vào link sau để xác thực tài khoản của bạn</h2>")
+        stringBuilder.append("Vui lòng bấm vào link sau để xác thực tài khoản của bạn: ")
                 .append(text);
         mailMessage.setText(stringBuilder.toString());
-        mailMessage.setSentDate(new Date());
         mailSender.send(mailMessage);
     }
 }

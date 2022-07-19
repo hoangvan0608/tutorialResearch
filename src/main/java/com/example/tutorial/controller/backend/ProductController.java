@@ -4,14 +4,12 @@ import com.example.tutorial.config.language.MessageConfig;
 import com.example.tutorial.dto.CategoryDTO;
 import com.example.tutorial.dto.ProductDTO;
 import com.example.tutorial.entity.BrandEntity;
-import com.example.tutorial.entity.CategoryEntity;
 import com.example.tutorial.entity.ColorEntity;
 import com.example.tutorial.entity.MemoryEntity;
-import com.example.tutorial.repository.CategoryRepository;
 import com.example.tutorial.service.*;
 import com.example.tutorial.utils.MessageResponse;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/backend/product/")
+@PreAuthorize("hasAnyRole('ADMIN','USER')")
 public class ProductController {
 
     @Autowired

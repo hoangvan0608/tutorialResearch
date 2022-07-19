@@ -1,5 +1,6 @@
 package com.example.tutorial.dto;
 
+import com.example.tutorial.dto.validation.gmail.GmailAnnotation;
 import com.example.tutorial.dto.validation.password.RepassAnnotation;
 import lombok.*;
 
@@ -30,5 +31,5 @@ public class UserDTO {
     private String address;
     private String phone;
     private String code;
-    private String ACTIVE;
+    private String active;
 }

@@ -1,6 +1,7 @@
 package com.example.tutorial.service.impl;
 
 import com.example.tutorial.config.language.MessageConfig;
+import com.example.tutorial.dto.LoginRequest;
 import com.example.tutorial.dto.UserDTO;
 import com.example.tutorial.entity.UserDetailEntity;
 import com.example.tutorial.entity.UserEntity;
@@ -12,6 +13,7 @@ import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,6 +63,8 @@ public class UserServiceImpl implements UserService {
             userDTO.setFullName(userEntity.getFullName());
             userDTO.setEmail(userEntity.getEmail());
             userDTO.setId(userId);
+            userDTO.setCode(userEntity.getCode());
+            userDTO.setActive(userEntity.getActive() == true ? "1" : "0");
             if(userDetail != null){
                 userDTO.setPhone(userDetail.getPhoneNumber());
                 userDTO.setAddress(userDetail.getAddress());
@@ -80,9 +85,10 @@ public class UserServiceImpl implements UserService {
         if (dto.getId() == null) {
             userEntity = new UserEntity();
             userEntity.setEmail(dto.getEmail());
-            userEntity.setACTIVE(true);
+            userEntity.setActive(dto.getActive().equals("1"));
             userEntity.setCode(UUID.randomUUID().toString());
             userEntity.setInsertTime(Timestamp.valueOf(LocalDateTime.now()));
+            userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         } else {
             userEntity = userRepository.findById(dto.getId()).get();
@@ -91,7 +97,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             userEntity.setFullName(dto.getFullName());
             userEntity.setRole(dto.getRole());
-            userEntity.setPassword(dto.getPassword());
+            userEntity.setActive(dto.getActive().equals("1"));
             userRepository.save(userEntity);
             userDetailRepository.deleteAllByUserId(dto.getId());
             if(!StringUtils.isEmpty(dto.getPhone()) && !StringUtils.isEmpty(dto.getAddress())) {
@@ -124,10 +130,10 @@ public class UserServiceImpl implements UserService {
         userEntity.setRole(CONSTANT.ROLE_USER);
         userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         userEntity.setCode(UUID.randomUUID().toString());
-        userEntity.setACTIVE(false);
+        userEntity.setActive(false);
         userEntity.setInsertTime(Timestamp.valueOf(LocalDateTime.now()));
         try {
-//            emailService.sendMail(userEntity);
+            emailService.sendMail(userEntity);
             userRepository.save(userEntity);
             MessageResponse.successAlert(model, messageConfig.getMessage("register.success"));
         } catch (Exception e) {
@@ -141,7 +147,19 @@ public class UserServiceImpl implements UserService {
         if(userEntity == null) {
             return;
         }
-        userEntity.setACTIVE(true);
+        userEntity.setActive(true);
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public Integer getAccountByUsername(LoginRequest loginRequest) {
+        UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail());
+        if (user == null) {
+            return CONSTANT.EMAIL_NOT_FOUND;
+        }
+        if (!BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())) {
+            return CONSTANT.PASSWORD_INVALID;
+        }
+        return 0;
     }
 }

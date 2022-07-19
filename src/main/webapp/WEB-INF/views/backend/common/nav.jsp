@@ -95,7 +95,7 @@
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                     <li><a class="dropdown-item" href="#"></a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#"><sec:authentication property="principal.fullName"></sec:authentication></a></li>
+                    <li><a class="dropdown-item" href="#"><sec:authentication property="principal.email"></sec:authentication></a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                 </ul>

@@ -148,6 +148,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteById(Long id, RedirectAttributes attributes) {
         try {
             productRepository.deleteById(id);
+            mediaRepository.deleteAllByProductId(id);
             MessageResponse.successAlert(attributes, messageConfig.getMessage("delete.success"));
         } catch (Exception e) {
             e.printStackTrace();
