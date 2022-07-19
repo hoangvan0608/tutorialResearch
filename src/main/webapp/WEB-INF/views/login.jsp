@@ -111,7 +111,7 @@
                     <button class="btn mt-3">Login</button>
                 </form>
                 <div class="text-center fs-6">
-                    <a href="#">Forget password?</a> or <a href="#">Sign up</a>
+                    <a href="#">Forget password?</a> or <a href="/register">Sign up</a>
                 </div>
                 <jsp:include page="../common/message.jsp"></jsp:include>
 
@@ -119,9 +119,3 @@
         </body>
 
         </html>
-
-<%--<c:if test="${not empty message}">--%>
-<%--    <script>--%>
-<%--        alert(${message})--%>
-<%--    </script>--%>
-<%--</c:if>--%>
