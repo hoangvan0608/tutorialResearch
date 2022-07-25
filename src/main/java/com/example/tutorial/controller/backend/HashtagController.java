@@ -1,9 +1,7 @@
 package com.example.tutorial.controller.backend;
 
 import com.example.tutorial.config.language.MessageConfig;
-import com.example.tutorial.entity.ColorEntity;
 import com.example.tutorial.entity.HashTagEntity;
-import com.example.tutorial.service.ColorService;
 import com.example.tutorial.service.HashtagService;
 import com.example.tutorial.utils.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
